@@ -1,3 +1,5 @@
+import 'package:adf_get_connect/pages/home/home_controller.dart';
+import 'package:adf_get_connect/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,7 +19,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       getPages: [
-        GetPage(name: '/', page: () => const HomePage()),
+        GetPage(
+            name: '/',
+            binding: BindingsBuilder(() {
+              Get.lazyPut(() => UserRepository());
+              Get.put(HomeController(repository: Get.find()));
+            }),
+            page: () => const HomePage()),
       ],
     );
   }
