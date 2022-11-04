@@ -17,10 +17,10 @@ class UserRepository {
     restClient.httpClient.addAuthenticator<Object?>((request) async {
       log('addAuthenticator CHAMADO!!!');
 
-      // const email = 'rodrigogetx@academiadoflutter.com.br';
-      // const password = '123123';
-      const email = 'yasmim@gmail.com';
+      const email = 'rodrigogetx@academiadoflutter.com.br';
       const password = '123123';
+      // const email = 'yasmim@gmail.com';
+      // const password = '123123';
       final result = await restClient.post('/auth', {
         'email': email,
         'password': password,
