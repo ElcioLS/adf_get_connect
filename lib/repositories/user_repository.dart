@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../models/user_model.dart';
@@ -11,11 +12,40 @@ class UserRepository {
     restClient.httpClient.baseUrl = 'http://192.168.0.5:8080';
     // restClient.httpClient.errorSafety = false;
 
+    restClient.httpClient.maxAuthRetries = 3;
+
+    restClient.httpClient.addAuthenticator<Object?>((request) async {
+      log('addAuthenticator CHAMADO!!!');
+
+      // const email = 'rodrigogetx@academiadoflutter.com.br';
+      // const password = '123123';
+      const email = 'yasmim@gmail.com';
+      const password = '123123';
+      final result = await restClient.post('/auth', {
+        'email': email,
+        'password': password,
+      });
+
+      if (!result.hasError) {
+        final accessToken = result.body['access_token'];
+        final type = result.body['type'];
+        if (accessToken != null) {
+          request.headers['authorization'] = '$type $accessToken';
+        }
+      } else {
+        log('Erro ao fazer login ${result.statusText}');
+      }
+
+      return request;
+    });
+    debugPrint('ponto 2 addRequestModifier');
+
     restClient.httpClient.addRequestModifier<Object?>((request) {
       log('URL que está sendo chamada: ${request.url.toString()}');
       request.headers['start-time'] = DateTime.now().toIso8601String();
       return request;
     });
+    debugPrint('ponto 3 addResponseModifier');
 
     restClient.httpClient.addResponseModifier((request, response) {
       response.headers?['end-time'] = DateTime.now().toIso8601String();

@@ -35,7 +35,7 @@ class HomeController extends GetxController with StateMixin<List<UserModel>> {
   Future<void> register() async {
     try {
       final user = UserModel(
-          name: 'Yasmim', email: 'Yasmim@gmail.com', password: '1234');
+          name: 'Yasmim', email: 'Yasmim@gmail.com', password: '123123');
       await _repository.save(user);
       _findAll();
     } catch (e, s) {
